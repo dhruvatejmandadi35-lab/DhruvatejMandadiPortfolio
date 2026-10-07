@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dhruvatej Mandadi | Engineering Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080a; --bg-2:#0b0d10; --panel:rgba(255,255,255,.025);
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.16);
+  --text:#ffffff; --muted:rgba(255,255,255,.4); --body:#c3cad5; --dim:#8b93a0;
+  --emerald:#10b981; --emerald-soft:rgba(16,185,129,.14);
+  --amber:#e8b44c; --amber-soft:rgba(232,180,76,.08);
+  --f-wide:'Syncopate','Arial Black',Helvetica,sans-serif;
+  --f-tech:'Space Grotesk','Segoe UI',Helvetica,Arial,sans-serif;
+  --f-body:'Inter','Segoe UI',Helvetica,Arial,sans-serif;
+  --pad:clamp(20px,5vw,64px);
+  color-scheme:dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--body);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg,video{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--emerald);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Background: grid + vignette + drifting light ---------- */
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bg::before{content:"";position:absolute;inset:-20%;
+  background:
+   radial-gradient(40% 35% at 70% 30%,rgba(190,200,215,.10),transparent 70%),
+   radial-gradient(35% 30% at 20% 75%,rgba(16,185,129,.07),transparent 70%);
+  animation:drift 38s ease-in-out infinite alternate}
+.bg::after{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,#000 40%,transparent 100%);
+          mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,#000 40%,transparent 100%)}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(7,8,10,.85) 100%)}
+@keyframes drift{0%{transform:translate3d(-4%,-2%,0) rotate(0deg)}100%{transform:translate3d(4%,3%,0) rotate(8deg)}}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;padding:calc(env(safe-area-inset-top,0px) + 20px) var(--pad) 20px;display:flex;align-items:center;justify-content:space-between;gap:24px;transition:background .3s}
+.nav.scrolled{background:rgba(7,8,10,.82);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand-box{width:36px;height:36px;border:1px solid var(--line-2);display:grid;place-items:center}
+.brand-name{font-family:var(--f-wide);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--text)}
+.nav-links{display:flex;gap:34px;list-style:none;margin:0;padding:0}
+.nav-links a{font-family:var(--f-tech);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;font-family:var(--f-tech);font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);padding:14px 22px;background:transparent;cursor:pointer;overflow:hidden;isolation:isolate;transition:color .35s}
+.btn::before{content:"";position:absolute;inset:0;background:#fff;transform:translateX(-101%);transition:transform .45s cubic-bezier(.7,0,.2,1);z-index:-1}
+.btn:hover{color:#07080a}
+.btn:hover::before{transform:translateX(0)}
+.btn .arr{transition:transform .35s}
+.btn:hover .arr{transform:translateX(4px)}
+.burger{display:none;background:none;border:1px solid var(--line-2);width:42px;height:42px;cursor:pointer;color:#fff}
+.burger span{display:block;width:18px;height:1px;background:#fff;margin:5px auto}
+.drawer{position:fixed;inset:0;z-index:60;background:rgba(7,8,10,.97);padding:calc(env(safe-area-inset-top,0px) + 90px) var(--pad) 40px;display:flex;flex-direction:column;gap:6px;transform:translateY(-100%);transition:transform .45s cubic-bezier(.7,0,.2,1);visibility:hidden}
+.drawer.open{transform:none;visibility:visible}
+.drawer a{font-family:var(--f-wide);font-size:22px;font-weight:700;color:#fff;text-decoration:none;padding:16px 0;border-bottom:1px solid var(--line);letter-spacing:.06em}
+.drawer-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);right:var(--pad);background:none;border:1px solid var(--line-2);color:#fff;width:42px;height:42px;font-size:22px;cursor:pointer}
+
+/* ---------- Hero ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;padding-bottom:40px}
+.hero-grid{flex:1;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:48px;align-items:center;padding:40px var(--pad)}
+.badge{display:flex;align-items:center;gap:14px;font-family:var(--f-tech);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:34px}
+.badge .rule{width:44px;height:1px;background:rgba(255,255,255,.5)}
+.dot{width:7px;height:7px;border-radius:50%;background:#fff;position:relative;flex:none}
+.dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid currentColor;color:inherit;animation:ping 2s ease-out infinite}
+.dot.white{color:#fff}
+.dot.green{background:var(--emerald);color:var(--emerald)}
+.dot.amber{background:var(--amber);color:var(--amber)}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+.title{font-family:var(--f-wide);font-weight:700;text-transform:uppercase;font-size:clamp(1.6rem,6.4vw,4.25rem);line-height:1.08;letter-spacing:.01em;margin:0 0 30px}
+.title span{display:block;opacity:0;transform:translateY(18px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+.title span:nth-child(1){color:#fff;animation-delay:.1s}
+.title span:nth-child(2){color:var(--muted);animation-delay:.22s}
+.title span:nth-child(3){color:#fff;animation-delay:.34s}
+.title span:nth-child(4){color:var(--muted);animation-delay:.46s}
+@keyframes rise{to{opacity:1;transform:none}}
+.lede{max-width:52ch;color:#cbd5e1;font-size:clamp(15px,1.4vw,17px);margin:0 0 38px}
+.ctas{display:flex;flex-wrap:wrap;gap:22px;align-items:center}
+.play{display:inline-flex;align-items:center;gap:14px;background:none;border:0;color:#fff;cursor:pointer;font-family:var(--f-tech);font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:6px}
+.play .ring{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.4);display:grid;place-items:center;transition:background .3s,border-color .3s}
+.play:hover .ring{background:rgba(255,255,255,.1);border-color:#fff}
+
+/* HUD card with corner brackets */
+.hud{position:relative;background:rgba(14,17,21,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);padding:28px;font-family:var(--f-tech)}
+.hud .c{position:absolute;width:16px;height:16px;border-color:rgba(255,255,255,.75);border-style:solid;border-width:0}
+.hud .tl{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.hud .tr{top:-1px;right:-1px;border-top-width:1px;border-right-width:1px}
+.hud .bl{bottom:-1px;left:-1px;border-bottom-width:1px;border-left-width:1px}
+.hud .br{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
+.hud-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.75);padding-bottom:18px;border-bottom:1px solid var(--line)}
+.hud-head .l{display:flex;align-items:center;gap:10px}
+.hud-head .ver{color:var(--muted)}
+.hud h3{font-family:var(--f-wide);font-size:15px;letter-spacing:.06em;color:#fff;margin:22px 0 4px;text-transform:uppercase}
+.hud .sub{font-size:13px;color:var(--dim);margin:0 0 22px}
+.meter{margin-bottom:20px}
+.meter-row{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:9px}
+.meter-row b{color:#fff;font-weight:500;letter-spacing:.06em}
+.bar{height:3px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;width:0;background:#fff;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+.bar i.amber{background:var(--amber)}
+.hud-foot{display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-top:16px;border-top:1px solid var(--line)}
+.ok{color:var(--emerald)} .pend{color:var(--amber)}
+
+/* Metrics strip */
+.metrics{border-top:1px solid rgba(255,255,255,.1);display:grid;grid-template-columns:repeat(4,1fr)}
+.metric{display:flex;align-items:center;gap:18px;padding:26px var(--pad);border-right:1px solid var(--line)}
+.metric:last-child{border-right:0}
+.metric svg{flex:none;opacity:.7}
+.metric .n{font-family:var(--f-wide);font-weight:700;color:#fff;font-size:clamp(20px,2.2vw,28px);line-height:1}
+.metric .t{font-family:var(--f-tech);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:6px;line-height:1.4}
+
+/* ---------- Sections ---------- */
+section.block{padding:clamp(80px,11vw,150px) var(--pad) 40px;position:relative}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;padding-bottom:36px;border-bottom:1px solid var(--line);margin-bottom:56px}
+.sec-kicker{font-family:var(--f-tech);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--emerald);margin:0 0 18px;display:flex;align-items:center;gap:12px}
+.sec-kicker::before{content:"";width:28px;height:1px;background:currentColor}
+.sec-title{font-family:var(--f-wide);font-weight:700;text-transform:uppercase;font-size:clamp(1.5rem,4.2vw,3rem);line-height:1.1;margin:0;color:#fff}
+.sec-title .m{color:var(--muted);display:block}
+.sec-meta{font-size:15px;color:var(--body);max-width:56ch;justify-self:end}
+.sec-meta p{margin:0 0 6px}
+
+/* Project index */
+.index{width:100%;border-collapse:collapse;font-family:var(--f-tech);margin-bottom:90px}
+.index th{font-family:var(--f-tech);font-weight:500;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 10px 12px;border-bottom:1px solid var(--line-2)}
+.index th.what{font-size:10.5px;color:var(--muted)}
+.index .pg{font-family:var(--f-tech);font-size:12.5px;color:var(--dim)}
+.index .pg.todo{color:var(--amber)}
+.index td{padding:16px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.index tr{transition:background .2s}
+.index tr:hover{background:rgba(255,255,255,.025)}
+.index .num{width:56px;color:var(--muted);font-size:13px}
+.index a{text-decoration:none;color:#fff;font-size:17px;font-weight:500}
+.index .what{color:var(--dim);font-size:14px}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-tech);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;padding:5px 10px;border:1px solid}
+.status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.s-done{color:var(--emerald);border-color:rgba(16,185,129,.35)}
+.s-part{color:#d7dce3;border-color:rgba(255,255,255,.22)}
+.s-opt{color:#9fb4ff;border-color:rgba(159,180,255,.3)}
+.s-empty{color:var(--amber);border-color:rgba(232,180,76,.35)}
+
+/* Project spec sheet */
+.proj{display:grid;grid-template-columns:minmax(200px,280px) minmax(0,1fr);gap:clamp(28px,5vw,72px);padding:64px 0;border-top:1px solid var(--line)}
+.proj-side{position:sticky;top:110px;align-self:start}
+.proj-no{font-family:var(--f-wide);font-size:12px;color:var(--muted);letter-spacing:.2em;margin-bottom:16px}
+.proj-side h3{font-family:var(--f-wide);font-weight:700;text-transform:uppercase;color:#fff;font-size:clamp(18px,2vw,24px);line-height:1.2;margin:0 0 18px;letter-spacing:.02em}
+.spec{margin:22px 0 0;font-family:var(--f-tech);font-size:13px}
+.spec div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.spec dt{color:var(--muted)}
+.spec dd{margin:0;color:#e6e9ee;text-align:right}
+.proj-main{min-width:0}
+.proj-main > p{max-width:68ch}
+.lead{font-size:clamp(17px,1.6vw,20px);color:#e6e9ee;line-height:1.55;margin-top:0}
+h4{font-family:var(--f-tech);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:40px 0 14px}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;border-left:1px solid var(--line-2)}
+.steps li{position:relative;padding:0 0 22px 30px;max-width:68ch}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:-12px;top:0;width:23px;height:23px;background:var(--bg);border:1px solid var(--line-2);font-family:var(--f-tech);font-size:11px;color:#fff;display:grid;place-items:center}
+.steps b{color:#fff;font-weight:500;font-family:var(--f-tech)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+.note{background:var(--bg-2);padding:22px}
+.note h5{font-family:var(--f-tech);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--emerald);margin:0 0 10px;font-weight:500}
+.note ul{margin:0;padding-left:18px}
+.note li{margin-bottom:6px}
+.note p{margin:0}
+.quote{border-left:2px solid var(--emerald);padding:6px 0 6px 20px;margin:28px 0 0;color:#e6e9ee;font-size:17px;max-width:62ch}
+
+/* Placeholders */
+.ph{border:1px dashed rgba(232,180,76,.45);background:var(--amber-soft);padding:18px;display:flex;flex-direction:column;justify-content:center;gap:6px;min-height:120px;color:#e9d7ae;font-size:14px}
+.ph-tag{display:flex;align-items:center;gap:8px;font-family:var(--f-tech);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.ph-tag::before{content:"";width:6px;height:6px;background:var(--amber);border-radius:50%}
+.media{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:8px}
+.media .ph{aspect-ratio:4/3;min-height:0}
+.ph.wide{aspect-ratio:16/9}
+.media .ph.wide{aspect-ratio:16/8}
+
+/* Data viz */
+.viz{border:1px solid var(--line);background:var(--bg-2);padding:22px;margin-top:8px}
+.viz-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--f-tech);font-size:12px;color:var(--dim);margin-bottom:12px}
+.viz-head b{color:#fff;font-weight:500}
+.scroll-x{overflow-x:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:14px}
+.stat{background:var(--bg);padding:14px 16px;font-family:var(--f-tech)}
+.stat .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-size:20px;color:#fff;margin-top:4px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+
+/* POE power path */
+.path{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;row-gap:34px;counter-reset:p}
+.path li{position:relative;padding:22px 18px 22px 0;border-top:1px solid var(--line-2);opacity:.35;transition:opacity .6s,border-color .6s}
+.path li.lit{opacity:1;border-top-color:var(--emerald)}
+.path li::before{counter-increment:p;content:counter(p);position:absolute;top:-12px;left:0;width:23px;height:23px;background:var(--bg);border:1px solid var(--line-2);display:grid;place-items:center;font-family:var(--f-tech);font-size:11px;color:#fff;transition:border-color .6s,background .6s}
+.path li.lit::before{border-color:var(--emerald);background:#062a1f}
+.path .nm{font-family:var(--f-wide);font-weight:700;font-size:12.5px;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px;line-height:1.3}
+.path .ty{font-family:var(--f-tech);font-size:12px;color:var(--dim);margin-bottom:12px}
+.path code{display:inline-block;font-family:var(--f-tech);font-size:13px;color:var(--emerald);background:var(--emerald-soft);padding:3px 8px}
+.path .fl{font-size:12.5px;color:rgba(255,255,255,.72);border-left:1px solid var(--line-2);padding-left:8px;margin-top:10px;line-height:1.45}
+.formula{font-family:var(--f-tech);font-size:15px;color:#fff;background:var(--bg-2);border:1px solid var(--line);padding:18px 20px;margin-top:22px;overflow-x:auto;white-space:nowrap}
+.formula span{color:var(--muted)}
+
+/* Calculator */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+.calc-in,.calc-out{background:var(--bg-2);padding:24px}
+.fset{border:0;margin:0 0 18px;padding:0}
+.fset legend{font-family:var(--f-tech);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--emerald);margin-bottom:10px;padding:0}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fields label{display:flex;flex-direction:column;gap:5px;font-family:var(--f-tech);font-size:12px;color:var(--dim)}
+.fields input{background:var(--bg);border:1px solid var(--line-2);color:#fff;font-family:var(--f-tech);font-size:15px;padding:9px 10px;width:100%}
+.fields input:focus{border-color:var(--emerald);outline:none}
+.fields input::placeholder{color:rgba(232,180,76,.6)}
+.out-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-family:var(--f-tech)}
+.out-row .k{font-size:13px;color:var(--dim)}
+.out-row .k small{display:block;font-size:11.5px;color:var(--muted)}
+.out-row .v{font-size:19px;color:#fff;text-align:right;white-space:nowrap}
+.out-row .v.empty{color:var(--amber);font-size:13px}
+.calc-note{font-size:13px;color:var(--dim);margin-top:16px}
+.calc-reset{margin-top:16px}
+
+/* Repend */
+.sub-title{font-family:var(--f-wide);font-weight:700;text-transform:uppercase;color:#fff;font-size:clamp(1.2rem,2.6vw,1.9rem);margin:0 0 10px;letter-spacing:.02em}
+.sub-title span{color:var(--muted)}
+.sub-intro{max-width:68ch;margin:0 0 28px;color:var(--body)}
+.sub-block{padding-top:70px;border-top:1px solid var(--line);margin-top:30px}
+.rp-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:48px}
+.rp-facts div{background:var(--bg-2);padding:20px}
+.rp-facts .k{font-family:var(--f-tech);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.rp-facts .v{color:#fff;margin-top:6px;font-size:15px}
+.pipe{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin-top:8px;font-family:var(--f-tech)}
+.pipe .st{flex:1 1 140px;border:1px solid var(--line-2);padding:16px;background:var(--bg-2);position:relative}
+.pipe .st + .st{border-left:0}
+.pipe .st b{display:block;color:#fff;font-weight:500;font-size:14px}
+.pipe .st span{font-size:12px;color:var(--dim)}
+.pipe .st.v{border-color:rgba(16,185,129,.45);background:#06140f}
+.loop{font-family:var(--f-tech);font-size:13px;color:var(--emerald);margin-top:12px;display:flex;align-items:center;gap:10px}
+.later{border:1px solid var(--line-2);padding:22px;margin-top:40px;background:rgba(159,180,255,.04)}
+.later h5{font-family:var(--f-tech);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#9fb4ff;margin:0 0 8px;font-weight:500}
+.links{display:flex;flex-wrap:wrap;gap:16px;margin-top:36px}
+
+/* Footer */
+footer{padding:90px var(--pad) 60px;border-top:1px solid var(--line);margin-top:90px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end}
+.foot-title{font-family:var(--f-wide);font-weight:700;font-size:clamp(1.4rem,3.4vw,2.4rem);color:#fff;text-transform:uppercase;line-height:1.15;margin:0}
+.foot-title span{color:var(--muted);display:block}
+.copy{font-family:var(--f-tech);font-size:12px;color:var(--muted);margin-top:50px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(3,4,5,.88);display:none;align-items:center;justify-content:center;padding:var(--pad)}
+.modal.open{display:flex}
+.modal-box{width:min(900px,100%);position:relative}
+.modal-close{position:absolute;top:-52px;right:0;background:none;border:1px solid var(--line-2);color:#fff;width:42px;height:42px;font-size:22px;cursor:pointer}
+
+/* Figures and lightbox */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+.figs.wide{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.fig{margin:0;border:1px solid var(--line);background:var(--bg-2);display:flex;flex-direction:column;min-width:0}
+.fig.chosen{border-color:rgba(16,185,129,.6)}
+.zoom{all:unset;cursor:zoom-in;display:flex;align-items:center;justify-content:center;flex:1;background:#14171b;min-height:120px}
+.zoom:focus-visible{outline:2px solid var(--emerald);outline-offset:-2px}
+.zoom img{display:block;width:100%;height:auto;max-height:420px;object-fit:contain}
+.fig figcaption{font-family:var(--f-tech);font-size:12.5px;line-height:1.45;color:var(--dim);padding:10px 12px;border-top:1px solid var(--line)}
+.fig.chosen figcaption{color:var(--emerald)}
+.lb-img{display:block;max-width:100%;max-height:78vh;margin:0 auto;background:#fff}
+.lb-cap{font-family:var(--f-tech);font-size:13px;color:var(--body);text-align:center;margin-top:12px}
+.figs:has(> .fig:only-child){max-width:640px}
+.vfig{margin:0;border:1px solid var(--line);background:#000;max-width:380px}
+.vfig video{display:block;width:100%;aspect-ratio:9/16;object-fit:contain;background:#000}
+.vfig figcaption{font-family:var(--f-tech);font-size:12.5px;color:var(--dim);padding:10px 12px;border-top:1px solid var(--line);background:var(--bg-2)}
+.vids{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.vids .vfig{flex:1 1 260px}
+.modal video{display:block;margin:0 auto;max-height:78vh;max-width:100%;background:#000}
+/* Project showcase carousel */
+.show{position:relative;background:rgba(14,17,21,.55);border:1px solid var(--line);font-family:var(--f-tech);overflow:hidden}
+.show .c{position:absolute;width:16px;height:16px;border-color:rgba(255,255,255,.75);border-style:solid;border-width:0;z-index:3}
+.show .tl{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}.show .tr{top:-1px;right:-1px;border-top-width:1px;border-right-width:1px}
+.show .bl{bottom:-1px;left:-1px;border-bottom-width:1px;border-left-width:1px}.show .br{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
+.show-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.75);border-bottom:1px solid var(--line)}
+.show-head .l{display:flex;align-items:center;gap:10px}
+.show-head .count{color:var(--muted)}
+.track{display:flex;transition:transform .8s cubic-bezier(.7,0,.2,1)}
+.slide{flex:0 0 100%;min-width:0}
+.slide-img{position:relative;aspect-ratio:16/10;overflow:hidden;background:#14171b}
+.slide-img img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);transition:transform 5.5s ease-out;filter:saturate(.9)}
+.slide.on .slide-img img{transform:scale(1)}
+.slide-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,8,10,.85))}
+.slide-tag{position:absolute;left:18px;bottom:14px;z-index:1;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#fff;background:rgba(7,8,10,.6);border:1px solid rgba(255,255,255,.25);padding:5px 9px}
+.slide-body{padding:18px 22px 20px}
+.slide-body h3{font-family:var(--f-wide);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin:0 0 6px}
+.slide-body p{font-family:var(--f-body);font-size:14px;color:var(--dim);margin:0 0 12px;min-height:2.9em}
+.slide-body a{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:3px}
+.slide-body a:hover{border-color:#fff}
+.show-foot{display:flex;align-items:center;gap:14px;padding:0 22px 18px}
+.dots{display:flex;gap:6px;flex:1}
+.dots button{flex:1;height:3px;border:0;padding:0;background:rgba(255,255,255,.12);cursor:pointer;position:relative;overflow:hidden}
+.dots button i{position:absolute;inset:0 auto 0 0;width:0;background:#fff}
+.dots button.done i{width:100%}
+.arrows{display:flex;gap:6px}
+.arrows button{width:32px;height:32px;border:1px solid var(--line-2);background:none;color:#fff;cursor:pointer;font-size:14px}
+.arrows button:hover{border-color:#fff}
+@media (max-width:1100px){.show{max-width:560px}}
+.brand-mono{font-family:var(--f-wide);font-weight:700;font-size:12px;letter-spacing:.04em;color:#fff}
+.brand-text{display:flex;flex-direction:column;gap:4px}
+.brand-sub{font-family:var(--f-tech);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.hero-me{display:flex;align-items:center;gap:18px;margin-bottom:30px}
+.hero-me .badge{margin-bottom:0}
+@media (max-width:560px){.hero-me .badge .dot{display:none}}
+.hero-photo{width:84px;height:84px;border-radius:50%;object-fit:cover;border:1px solid var(--line-2);box-shadow:0 0 0 5px rgba(255,255,255,.03)}
+@media (max-width:560px){.brand-name{font-size:11px}.brand-sub{display:none}.hero-photo{width:68px;height:68px}.hero-me{gap:14px}}
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--f-tech);font-size:14px;margin-top:8px}
+.tbl th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line-2);vertical-align:bottom}
+.tbl td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--body)}
+.tbl td:first-child{color:#fff}
+.tbl tr.pick td{background:var(--emerald-soft);color:#fff}
+.tbl .r{text-align:right}
+.brief{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.brief dl{margin:0;font-size:15px}
+.brief dt{font-family:var(--f-tech);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.brief dt:first-child{margin-top:0}
+.brief dd{margin:4px 0 0;color:#e6e9ee}
+.ok-line{font-family:var(--f-tech);color:var(--emerald);font-size:14px;margin-top:10px}
+.bar.range{height:6px}
+.bar .band{position:absolute;top:0;bottom:0;left:25%;width:50%;background:rgba(16,185,129,.22)}
+.bar.range i{background:#fff;z-index:1}
+@media (max-width:900px){.brief{grid-template-columns:1fr}}
+
+/* Responsive */
+@media (max-width:1100px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .hud{max-width:520px}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .metric:nth-child(2){border-right:0}
+  .metric:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .path{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:34px}
+  .calc{grid-template-columns:1fr}
+  .rp-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .nav-links,.nav .btn{display:none}
+  .burger{display:block}
+  .sec-head,.foot-grid{grid-template-columns:1fr}
+  .sec-meta{justify-self:start}
+  .proj{grid-template-columns:1fr;padding:48px 0}
+  .proj-side{position:static}
+  .two{grid-template-columns:1fr}
+  .index .what{display:none}
+}
+@media (max-width:560px){
+  .metrics{grid-template-columns:1fr}
+  .metric{border-right:0;border-bottom:1px solid var(--line)}
+  .path{grid-template-columns:1fr 1fr}
+  .rp-facts{grid-template-columns:1fr}
+  .index .num{width:36px}
+  .hud{padding:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .title span{opacity:1;transform:none}
+  .path li{opacity:1}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><div class="vignette"></div></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Dhruvatej Mandadi, back to top">
+    <span class="brand-box brand-mono" aria-hidden="true">DM</span>
+    <span class="brand-text"><span class="brand-name">Dhruvatej Mandadi</span><span class="brand-sub">Engineering portfolio</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#ied">IED</a></li>
+    <li><a href="#poe">POE</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="btn" href="#poe">Latest build <span class="arr">-&gt;</span></a>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
+</header>
+
+<nav class="drawer" id="drawer" aria-label="Mobile">
+  <button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
+  <a href="#ied">IED</a>
+  <a href="#poe">POE</a>
+  <a href="#projects">Projects</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<main id="top">
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-me"><img class="hero-photo" src="assets/img-01.jpg" alt="Dhruvatej Mandadi"><div class="badge"><span class="rule"></span>PLTW Engineering, Frisco High School<span class="dot white"></span></div></div>
+      <h1 class="title"><span>Dhruvatej</span><span>Mandadi.</span><span>Engineering</span><span>Portfolio.</span></h1>
+      <p class="lede">Projects from Introduction to Engineering Design and Principles of Engineering: sketches, prototypes, test data, and what each build taught me.</p>
+      <div class="ctas">
+        <a class="btn" href="#ied">View projects <span class="arr">-&gt;</span></a>
+        <button class="play" id="openDemo" aria-haspopup="dialog">
+          <span class="ring"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0 12 7 0 14z" fill="#fff"/></svg></span>
+          Watch test run
+        </button>
+      </div>
+    </div>
+
+    <aside class="show" id="show" aria-roledescription="carousel" aria-label="Project highlights">
+      <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+      <div class="show-head"><span class="l"><span class="dot green"></span>Project highlights</span><span class="count" id="showCount">01 / 07</span></div>
+      <div style="overflow:hidden"><div class="track" id="track">
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="1 of 7: Puzzle cube">
+          <div class="slide-img"><img data-from="The five pieces" alt=""><span class="slide-tag">IED / 01</span></div>
+          <div class="slide-body"><h3>Puzzle cube</h3><p>Five interlocking pieces, 27 unit cubes, one 3×3×3 cube. Sketched by hand piece by piece.</p><a href="#puzzle">View project -&gt;</a></div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 7: Fling machine">
+          <div class="slide-img"><img data-from="C1 notebook sketch" alt=""><span class="slide-tag">IED / 02</span></div>
+          <div class="slide-body"><h3>Fling machine</h3><p>Rubber band and balloon launcher, tested over 15 distance trials and 10 target shots.</p><a href="#fling">View project -&gt;</a></div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 7: Reverse engineering">
+          <div class="slide-img"><img data-from="The coffee maker we analyzed" alt=""><span class="slide-tag">IED / 03</span></div>
+          <div class="slide-body"><h3>Reverse engineering</h3><p>A Brentwood coffee maker, analyzed for its design, hidden parts, and how it works.</p><a href="#reverse">View project -&gt;</a></div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="4 of 7: Toy motor car">
+          <div class="slide-img"><img data-from="The finished F1-inspired car" alt=""><span class="slide-tag">IED / 04</span></div>
+          <div class="slide-body"><h3>Toy motor car</h3><p>A cardboard F1 car that beat a torque problem and finished ahead of most designs.</p><a href="#toycar">View project -&gt;</a></div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="5 of 7: Compound machine">
+          <div class="slide-img"><img data-from="Side view: worm" alt=""><span class="slide-tag">POE / 1.1.6</span></div>
+          <div class="slide-body"><h3>Compound machine</h3><p>A hand-cranked VEX lift for 1 kg of rubble, with a calculated MA of 7.38.</p><a href="#poe">View project -&gt;</a></div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="6 of 7: Repend">
+          <div class="slide-img"><img data-from="Generated compound interest lab" alt=""><span class="slide-tag">Hackathon</span></div>
+          <div class="slide-body"><h3>Repend</h3><p>An AI pipeline that turns any topic into an interactive learning lab.</p><a href="#projects">View project -&gt;</a></div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="7 of 7: Cofinity">
+          <div class="slide-img"><img data-from="The Cofinity calendar" alt=""><span class="slide-tag">Personal</span></div>
+          <div class="slide-body"><h3>Cofinity</h3><p>An all-in-one platform for conventions and events, built with Lovable.</p><a href="#cofinity">View project -&gt;</a></div>
+        </div>
+      </div></div>
+      <div class="show-foot">
+        <div class="dots" id="dots"></div>
+        <div class="arrows"><button type="button" id="prev" aria-label="Previous project">&larr;</button><button type="button" id="next" aria-label="Next project">&rarr;</button></div>
+      </div>
+    </aside>
+  </div>
+
+  </section>
+
+<!-- ===================== IED ===================== -->
+<section class="block" id="ied">
+  <div class="sec-head">
+    <div>
+      <p class="sec-kicker">PLTW course one</p>
+      <h2 class="sec-title">Introduction to <span class="m">Engineering Design</span></h2>
+    </div>
+    <div class="sec-meta">
+      <p>Dhruvatej Mandadi, Frisco High School, Period 1A, Ms. Ho.</p>
+      <p>Sketching, testing, and reverse engineering, from the first puzzle cube to a motorized cardboard car.</p>
+    </div>
+  </div>
+
+  <table class="index" aria-label="IED project list">
+<thead><tr><th class="num"></th><th>Project</th><th class="what">Focus</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td class="num">01</td><td><a href="#puzzle">Puzzle cube</a></td><td class="what">Sketching and CAD</td><td><span class="status s-done">Finished</span></td></tr>
+<tr><td class="num">02</td><td><a href="#fling">Fling machine</a></td><td class="what">Prototyping and statistics</td><td><span class="status s-done">Finished</span></td></tr>
+<tr><td class="num">03</td><td><a href="#reverse">Reverse engineering</a></td><td class="what">Product analysis</td><td><span class="status s-done">Finished</span></td></tr>
+<tr><td class="num">04</td><td><a href="#toycar">Toy motor car</a></td><td class="what">Motorized cardboard car</td><td><span class="status s-done">Finished</span></td></tr>
+</tbody>
+</table>
+
+  <!-- 01 Puzzle cube -->
+  <article class="proj" id="puzzle">
+    <div class="proj-side">
+      <div class="proj-no">IED / 01</div>
+      <h3>Puzzle cube</h3>
+      <span class="status s-done">Finished</span>
+      <dl class="spec">
+        <div><dt>Pieces</dt><dd>5 unique</dd></div>
+        <div><dt>Unit cubes</dt><dd>27</dd></div>
+        <div><dt>Final form</dt><dd>3 &times; 3 &times; 3 cube</dd></div>
+        <div><dt>Work</dt><dd>Individual</dd></div>
+      </dl>
+    </div>
+    <div class="proj-main">
+      <p class="lead">Five interlocking pieces, 27 unit cubes in total, that assemble into one 3&times;3&times;3 cube. I designed the pieces with physical blocks, sketched them by hand, then modeled and assembled them in CAD.</p>
+      <h4>Process</h4>
+      <ol class="steps">
+        <li><b>CP1 Brainstorming.</b> Tested physical blocks until I had 5 unique pieces that interlock into the cube. Two pieces were too similar, so I redesigned one.</li>
+        <li><b>CP2 Sketches.</b> Isometric and orthographic sketches of every piece. This was the hardest part: I spent 6 hours after school on one drawing, then went to tutorials and it clicked.</li>
+        <li><b>CP3 CAD models.</b> Modeled each piece with dimensions. Precision mattered here, because a small error means the pieces don't fit.</li>
+        <li><b>CP4 Final assembly.</b> Assembled the cube in CAD and produced an isometric view and an exploded view.</li>
+      </ol>
+      <h4>Images</h4>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="The five pieces and the assembled 3×3×3 cube" aria-label="Enlarge image: The five pieces and the assembled 3×3×3 cube"><img src="assets/img-02.jpg" alt="The five pieces and the assembled 3×3×3 cube" loading="lazy"></button><figcaption>The five pieces and the assembled 3&times;3&times;3 cube</figcaption></figure></div>
+      <h4>CP2 Sketches</h4>
+      <div class="figs">
+        <figure class="fig "><button class="zoom" type="button" data-cap="Green piece: isometric view plus top, front, and right views" aria-label="Enlarge image: Green piece: isometric view plus top, front, and right views"><img src="assets/img-03.jpg" alt="Green piece: isometric view plus top, front, and right views" loading="lazy"></button><figcaption>Green piece: isometric view plus top, front, and right views</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Yellow piece: isometric view plus top, front, and right views" aria-label="Enlarge image: Yellow piece: isometric view plus top, front, and right views"><img src="assets/img-04.jpg" alt="Yellow piece: isometric view plus top, front, and right views" loading="lazy"></button><figcaption>Yellow piece: isometric view plus top, front, and right views</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Black piece: isometric view plus top, front, and right views" aria-label="Enlarge image: Black piece: isometric view plus top, front, and right views"><img src="assets/img-05.jpg" alt="Black piece: isometric view plus top, front, and right views" loading="lazy"></button><figcaption>Black piece: isometric view plus top, front, and right views</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Orange piece: isometric view plus top, front, and right views" aria-label="Enlarge image: Orange piece: isometric view plus top, front, and right views"><img src="assets/img-06.jpg" alt="Orange piece: isometric view plus top, front, and right views" loading="lazy"></button><figcaption>Orange piece: isometric view plus top, front, and right views</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Brown piece: isometric view plus top, front, and right views" aria-label="Enlarge image: Brown piece: isometric view plus top, front, and right views"><img src="assets/img-07.jpg" alt="Brown piece: isometric view plus top, front, and right views" loading="lazy"></button><figcaption>Brown piece: isometric view plus top, front, and right views</figcaption></figure>
+      </div>
+      <div class="notes">
+        <div class="note"><h5>What I learned</h5><ul>
+          <li>Anything visible in the isometric view must show up in at least 2 of the 3 orthographic views.</li>
+          <li>CAD sketch, extrude, and assembly tools.</li>
+          <li>The difference between isometric and exploded views.</li></ul></div>
+      </div>
+      <p class="quote">Not my strongest project, but I stuck with it and asked for help when I was stuck.</p>
+    </div>
+  </article>
+
+  <!-- 02 Fling machine -->
+  <article class="proj" id="fling">
+    <div class="proj-side">
+      <div class="proj-no">IED / 02</div>
+      <h3>Fling machine</h3>
+      <span class="status s-done">Finished</span>
+      <dl class="spec">
+        <div><dt>Team</dt><dd>Akul, Nishanth, Trent, me</dd></div>
+        <div><dt>Payload</dt><dd>Cotton ball</dd></div>
+        <div><dt>Distance trials</dt><dd>15</dd></div>
+        <div><dt>Target trials</dt><dd>10</dd></div>
+        <div><dt>Hit rate</dt><dd>100%</dd></div>
+      </dl>
+    </div>
+    <div class="proj-main">
+      <p class="lead">A launcher that flings a cotton ball at a target. The goal wasn't maximum distance; it was a machine that's consistent and predictable.</p>
+      <h4>C1 Build</h4>
+      <p>Rubber band and balloon propulsion, with a body of popsicle sticks, tape, and pipe cleaner. Problems we hit: the ball popping up instead of forward, the rubber band sliding, and parts breaking under tension. We also tried changing the balloon size, but it didn't help.</p>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="C1 notebook sketch and the finished launcher" aria-label="Enlarge image: C1 notebook sketch and the finished launcher"><img src="assets/img-08.jpg" alt="C1 notebook sketch and the finished launcher" loading="lazy"></button><figcaption>C1 notebook sketch and the finished launcher</figcaption></figure></div>
+
+      <h4>Who did what</h4>
+      <table class="tbl">
+        <thead><tr><th>Member</th><th class="r">Share</th><th>Contribution</th></tr></thead>
+        <tbody>
+          <tr><td>Akul and Nishanth</td><td class="r">50%</td><td>Built most of the machine, launched it, and ran the tests.</td></tr>
+          <tr><td>Trent</td><td class="r">25%</td><td>Drew the original sketch and found that putting the cotton ball in front of the placeholder launches it farther.</td></tr>
+          <tr><td>Me</td><td class="r">25%</td><td>Helped build, added stability, recorded every trial in my notebook, and finished the C3 sheet.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>C2 Distance trials</h4>
+      <div class="viz">
+        <div class="viz-head"><span><b>15 launches</b>, distance in inches</span><span><span style="color:var(--emerald)">&#9472;&#9472;</span> mean 52.93 in</span></div>
+        <div class="scroll-x"><svg id="flingChart" viewBox="0 0 640 250" style="min-width:520px;width:100%" role="img" aria-label="Bar chart of 15 launch distances: 39, 67, 48, 52, 56, 34, 58, 36, 52, 69, 52, 65, 50, 69, 47 inches"></svg></div>
+        <div class="scroll-x" style="margin-top:10px"><svg id="flingBox" viewBox="0 0 640 96" style="min-width:520px;width:100%" role="img" aria-label="Box plot: minimum 34, Q1 47, median 52, Q3 65, maximum 69, fences at 20 and 92"></svg></div>
+        <div class="stats">
+          <div class="stat"><div class="k">Mean</div><div class="v">52.93</div></div>
+          <div class="stat"><div class="k">Median</div><div class="v">52</div></div>
+          <div class="stat"><div class="k">Mode</div><div class="v">52</div></div>
+          <div class="stat"><div class="k">Range</div><div class="v">35</div></div>
+          <div class="stat"><div class="k">IQR</div><div class="v">18</div></div>
+          <div class="stat"><div class="k">Outliers</div><div class="v">None</div></div>
+          <div class="stat"><div class="k">Device error</div><div class="v">0.93</div></div>
+        </div>
+      </div>
+
+      <h4>C3 Target map from 60 in</h4>
+      <div class="two">
+        <div class="viz">
+          <svg id="target" viewBox="-17 -17 34 34" style="width:100%;max-width:360px;display:block;margin:0 auto" role="img" aria-label="Target map of 10 shots with the calculated center at 0.2, 0.8 inches and a one standard deviation circle of 4.69 inches"></svg>
+          <p class="calc-note" style="text-align:center;margin-top:8px">Dots are the 10 shots from our trial table. Grid rings every 5 in; the dashed circle is one standard deviation around the calculated center.</p>
+        </div>
+        <div>
+          <div class="stats" style="margin-top:8px">
+            <div class="stat"><div class="k">Calculated center</div><div class="v">(0.2, 0.8)</div></div>
+            <div class="stat"><div class="k">Std dev</div><div class="v">4.69 in</div></div>
+            <div class="stat"><div class="k">Device error</div><div class="v">1.22</div></div>
+            <div class="stat"><div class="k">Success rate</div><div class="v">100%</div></div>
+          </div>
+          <p style="margin-top:18px">Result: high accuracy, low precision. The shots centered on the target, but they were spread out.</p>
+        </div>
+      </div>
+      <div class="figs wide" style="margin-top:12px"><figure class="fig "><button class="zoom" type="button" data-cap="Our C3 trial table and the target sheet" aria-label="Enlarge image: Our C3 trial table and the target sheet"><img src="assets/img-09.jpg" alt="Our C3 trial table and the target sheet" loading="lazy"></button><figcaption>Our C3 trial table and the target sheet</figcaption></figure></div>
+
+      <div class="notes" style="margin-top:36px">
+        <div class="note"><h5>What I learned</h5><ul>
+          <li>Statistics tell you how reliable a machine is. The mean looked fine, but the spread was wide.</li>
+          <li>Launch angle matters as much as force.</li></ul></div>
+        <div class="note"><h5>Next time</h5><ul>
+          <li>Elevate the launcher for a better launch angle.</li>
+          <li>Lock the rubber band in place between trials.</li></ul></div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 Reverse engineering -->
+  <article class="proj" id="reverse">
+    <div class="proj-side">
+      <div class="proj-no">IED / 03</div>
+      <h3>Reverse engineering</h3>
+      <span class="status s-done">Finished</span>
+      <dl class="spec">
+        <div><dt>Product</dt><dd>Brentwood TS-213BL coffee maker</dd></div>
+        <div><dt>Partner</dt><dd>Liam</dd></div>
+        <div><dt>CP2</dt><dd>Done solo</dd></div>
+      </dl>
+    </div>
+    <div class="proj-main">
+      <p class="lead">We took apart a coffee maker to understand how it was designed and how it works inside, starting with a visual analysis of its elements and principles of design.</p>
+      <div class="two" style="align-items:start">
+        <div class="figs" style="margin-top:0"><figure class="fig "><button class="zoom" type="button" data-cap="The coffee maker we analyzed" aria-label="Enlarge image: The coffee maker we analyzed"><img src="assets/img-10.jpg" alt="The coffee maker we analyzed" loading="lazy"></button><figcaption>The coffee maker we analyzed</figcaption></figure></div>
+        <div>
+          <table class="tbl" style="margin-top:0">
+            <thead><tr><th>Element</th><th>What we saw</th><th>By</th></tr></thead>
+            <tbody>
+              <tr><td>Point</td><td>The power button</td><td>Me</td></tr>
+              <tr><td>Line</td><td>&ndash;</td><td>Me</td></tr>
+              <tr><td>Value</td><td>The darker cup interior shows the water level</td><td>Me</td></tr>
+              <tr><td>Color</td><td>Blue and seafoam</td><td>Liam</td></tr>
+              <tr><td>Shape</td><td>&ndash;</td><td>Liam</td></tr>
+              <tr><td>Form</td><td>Cylindrical base with a rectangular top for water and beans</td><td>Liam</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <table class="tbl" style="margin-top:20px">
+        <thead><tr><th>Principle</th><th>What we saw</th><th>By</th></tr></thead>
+        <tbody>
+          <tr><td>Balance</td><td>Mostly symmetric, but the power button breaks the symmetry</td><td>Liam</td></tr>
+          <tr><td>Emphasis</td><td>The red power button</td><td>Liam</td></tr>
+          <tr><td>Contrast</td><td>&ndash;</td><td>Liam</td></tr>
+          <tr><td>Rhythm</td><td>Regular</td><td>Me</td></tr>
+          <tr><td>Proportion</td><td>&ndash;</td><td>Me</td></tr>
+          <tr><td>Unity</td><td>&ndash;</td><td>Me</td></tr>
+        </tbody>
+      </table>
+      <h4>CP2 Functional analysis (solo)</h4>
+      <div class="brief">
+        <div class="figs" style="margin-top:0"><figure class="fig "><button class="zoom" type="button" data-cap="My isometric pictorial of the coffee maker" aria-label="Enlarge image: My isometric pictorial of the coffee maker"><img src="assets/img-11.jpg" alt="My isometric pictorial of the coffee maker" loading="lazy"></button><figcaption>My isometric pictorial of the coffee maker</figcaption></figure></div>
+        <dl>
+          <dt>Product</dt><dd>Brentwood Appliances TS-213BL coffee maker</dd>
+          <dt>Purpose</dt><dd>Make coffee, heat it, and give it a good texture, while saving time on a morning or evening drink.</dd>
+          <dt>How it operates</dt><dd>Water flows from the reservoir into tubes, where electric current heats it. It comes out of the showerhead into the brew basket, mixes with the coffee grounds, and drips down into the cup.</dd>
+        </dl>
+      </div>
+
+      <h4>Components</h4>
+      <div class="two" style="align-items:start">
+        <table class="tbl" style="margin-top:0">
+          <thead><tr><th>Visible</th></tr></thead>
+          <tbody><tr><td>Lid</td></tr><tr><td>Power button</td></tr><tr><td>Water gauge</td></tr><tr><td>Coffee cup</td></tr><tr><td>Hot plate</td></tr><tr><td>Plug</td></tr></tbody>
+        </table>
+        <table class="tbl" style="margin-top:0">
+          <thead><tr><th>Hidden</th><th>Function</th></tr></thead>
+          <tbody>
+            <tr><td>Tubes</td><td>Carry water to the brew basket and keep it hot with the current</td></tr>
+            <tr><td>Temperature sensor</td><td>Keeps the water from getting too hot or too cold</td></tr>
+            <tr><td>Valve</td><td>Lets water into the tubes and stops it from flowing back into the reservoir</td></tr>
+            <tr><td>Showerhead</td><td>Drops water into the brew basket</td></tr>
+            <tr><td>Brew basket</td><td>Under the lid; flavors the water as it passes through</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The plug and power button start the current that heats both the water and the hot plate, so the coffee comes out hot.</p>
+
+      <h4>Black box model</h4>
+      <div class="pipe">
+        <div class="st"><b>Inputs</b><span>Coffee beans, water, electric current</span></div>
+        <div class="st v"><b>Hidden processes</b><span>Water heating (temperature sensor, plug, hot plate, tubes) and coffee brewing (brew basket)</span></div>
+        <div class="st"><b>Outputs</b><span>Coffee taste, clear-to-brown color, coffee smell, a hot drink</span></div>
+      </div>
+
+      <h4>Why reverse engineer</h4>
+      <p>Taking a product apart shows its components, elements, principles, and functions. That tells you what can be changed to improve the design without breaking its main purpose.</p>
+
+      <div class="notes" style="margin-top:20px">
+        <div class="note"><h5>Collaboration</h5><p>Liam and I communicated well on each person's tasks in CP1. We were confused at first, but we got it done and decided together whether our photos were good enough. I was absent for the next 2 A days, so I did CP2 on my own.</p></div>
+        <div class="note"><h5>Next time</h5><ul>
+          <li>Take cleaner photos.</li>
+          <li>Keep more organized notes on hidden parts.</li>
+          <li>Use neater line weights.</li></ul></div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 Toy motor car -->
+  <article class="proj" id="toycar">
+    <div class="proj-side">
+      <div class="proj-no">IED / 04</div>
+      <h3>Toy motor car</h3>
+      <span class="status s-done">Finished</span>
+      <dl class="spec">
+        <div><dt>Partner</dt><dd>Trent Warner</dd></div>
+        <div><dt>Power</dt><dd>6V battery, 3V DC motor</dd></div>
+        <div><dt>Goal</dt><dd>20 ft, straight line</dd></div>
+        <div><dt>Final size</dt><dd>9.5 &times; 4 &times; 2 in</dd></div>
+        <div><dt>Style</dt><dd>F1-inspired</dd></div>
+      </dl>
+    </div>
+    <div class="proj-main">
+      <p class="lead">A motorized toy car made mostly of cardboard, designed to teach elementary-age kids basic engineering. It had to run on a 6V battery and pulley system and travel at least 20 ft in a straight line.</p>
+
+      <h4>Design brief</h4>
+      <div class="brief">
+        <div class="figs" style="margin-top:0"><figure class="fig "><button class="zoom" type="button" data-cap="Our design brief" aria-label="Enlarge image: Our design brief"><img src="assets/img-12.jpg" alt="Our design brief" loading="lazy"></button><figcaption>Our design brief</figcaption></figure></div>
+        <dl>
+          <dt>Client</dt><dd>Elementary school students and educators</dd>
+          <dt>End user</dt><dd>Elementary-age kids who want engaging, educational toys</dd>
+          <dt>Problem</dt><dd>Kids lack affordable, sustainable, interactive toys that teach engineering.</dd>
+          <dt>Criteria</dt><dd>Has a battery, uses electrical energy, is creative, and the battery and switch are visible.</dd>
+          <dt>Constraints</dt><dd>At most 10 in long, 6 in wide, and 5 in tall including wheels. Cardboard no thicker than &frac14; in. No glue, no 3D printing, and only 12 in of duct tape.</dd>
+        </dl>
+      </div>
+
+      <h4>Research and sketches</h4>
+      <p>We each studied 5 reference cars, 10 in total, including a prop-driven cardboard RC car, a rubber band car, a solar car, and a propeller toy. Then we sketched four designs at 1:2 scale for CP6: Trent drew an F1 car and a Nissan Skyline, and I drew a Cybertruck and a fan motor car. We chose the F1 style because it's light, quick, uses little material, and looks good.</p>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="Our four sketches and decision matrix scores" aria-label="Enlarge image: Our four sketches and decision matrix scores"><img src="assets/img-13.jpg" alt="Our four sketches and decision matrix scores" loading="lazy"></button><figcaption>Our four sketches and decision matrix scores</figcaption></figure></div>
+      <div class="figs" style="margin-top:12px">
+        <figure class="fig "><button class="zoom" type="button" data-cap="Trent&#x27;s F1 sketch, side view" aria-label="Enlarge image: Trent&#x27;s F1 sketch, side view"><img src="assets/img-14.jpg" alt="Trent&#x27;s F1 sketch, side view" loading="lazy"></button><figcaption>Trent's F1 sketch, side view</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Our chosen F1 design: curved front wing, open cockpit, blocky tail, and a low underbody. 9.5 × 4 × 2 in." aria-label="Enlarge image: Our chosen F1 design: curved front wing, open cockpit, blocky tail, and a low underbody. 9.5 × 4 × 2 in."><img src="assets/img-15.jpg" alt="Our chosen F1 design: curved front wing, open cockpit, blocky tail, and a low underbody. 9.5 × 4 × 2 in." loading="lazy"></button><figcaption>Our chosen F1 design: curved front wing, open cockpit, blocky tail, and a low underbody. 9.5 × 4 × 2 in.</figcaption></figure>
+      </div>
+
+      <h4>Build</h4>
+      <ol class="steps">
+        <li><b>Base.</b> Cut a cardboard base with folding sides.</li>
+        <li><b>First prototype.</b> Built it in the library.</li>
+        <li><b>Drivetrain.</b> DC motor to a pulley, a rubber band belt, and a pulley on the rear axle. The axles run through straw bearings.</li>
+        <li><b>Problem.</b> Our first working prototype's wheels spun when we lifted it, but it stalled on the floor. The motor's torque was too little to overcome friction between the wheels and the floor, and between the wheels and the body, where they hit the sides.</li>
+        <li><b>Finding the cause.</b> For hours we tried different ideas. We found the pulley had too much friction, and the battery holder added a lot of weight.</li>
+        <li><b>Fixes.</b> We moved the batteries to the back, over the rear drive wheels, so the car became rear-wheel drive with better traction. We also repositioned the wheels so they no longer rubbed the inside walls, and remeasured and tightened the internal dimensions. After that, the motor finally had enough torque and the car moved consistently.</li>
+        <li><b>Race day.</b> The first 2 runs drifted off course or wouldn't start. We kept adjusting wheel alignment and weight balance between runs, and by the later runs the car ran straighter and more reliably. It finished ahead of most other designs.</li>
+      </ol>
+
+      <h4>Final car</h4>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="The finished F1-inspired car from four angles" aria-label="Enlarge image: The finished F1-inspired car from four angles"><img src="assets/img-16.jpg" alt="The finished F1-inspired car from four angles" loading="lazy"></button><figcaption>The finished F1-inspired car from four angles</figcaption></figure></div>
+      <div class="figs" style="margin-top:12px">
+        <figure class="fig "><button class="zoom" type="button" data-cap="Testing the car on the floor after the fixes" aria-label="Enlarge image: Testing the car on the floor after the fixes"><img src="assets/img-17.jpg" alt="Testing the car on the floor after the fixes" loading="lazy"></button><figcaption>Testing the car on the floor after the fixes</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Top view of the finished car" aria-label="Enlarge image: Top view of the finished car"><img src="assets/img-18.jpg" alt="Top view of the finished car" loading="lazy"></button><figcaption>Top view of the finished car</figcaption></figure>
+      </div>
+      <div class="vids" style="margin-top:12px">
+        <figure class="vfig"><video controls playsinline muted preload="none" poster="assets/img-19.jpg" src="assets/video-01.mp4"></video><figcaption>The car running down the hallway (5 s)</figcaption></figure>
+      </div>
+
+      <div class="notes" style="margin-top:28px">
+        <div class="note"><h5>What made our car unique</h5><ul>
+          <li>An F1-inspired body that was lighter and used less material than most builds.</li>
+          <li>A unique color and styling that set it apart.</li>
+          <li>A low, narrow profile for a straighter, faster run.</li></ul></div>
+        <div class="note"><h5>What I learned</h5><ul>
+          <li>A motor that spins freely in the air can still stall under load. Friction decides whether the torque is enough.</li>
+          <li>Putting weight over the drive wheels adds traction. I worked through this torque problem with Claude while we were building.</li></ul></div>
+        <div class="note"><h5>Next time</h5><ul>
+          <li>Measure carefully up front.</li>
+          <li>Leave more clearance inside the body.</li>
+          <li>Test motor torque against friction before full assembly.</li></ul></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ===================== POE ===================== -->
+<section class="block" id="poe">
+  <div class="sec-head">
+    <div>
+      <p class="sec-kicker">PLTW course two</p>
+      <h2 class="sec-title">Principles of <span class="m">Engineering</span></h2>
+    </div>
+    <div class="sec-meta">
+      <p>Compound machine, activity 1.1.6, Period 1B. A hand-powered VEX machine for Rescue System Inc. that lifts about 1 kg of rubble 5 in, so a response team can check what's underneath.</p>
+    </div>
+  </div>
+
+  <article class="proj" style="border-top:0;padding-top:0">
+    <div class="proj-side">
+      <div class="proj-no">POE / 1.1.6</div>
+      <h3>Compound machine</h3>
+      <span class="status s-done">Finished</span>
+      <dl class="spec">
+        <div><dt>My role</dt><dd>Technical Engineer</dd></div>
+        <div><dt>Timeline</dt><dd>9/2 to 9/22</dd></div>
+        <div><dt>Load</dt><dd>1 kg, lifted 5 in</dd></div>
+        <div><dt>Calculated MA</dt><dd class="ok">7.38</dd></div>
+        <div><dt>Parts</dt><dd>VEX, one base plate</dd></div>
+      </dl>
+    </div>
+    <div class="proj-main">
+      <p class="lead">A hand crank drives a worm screw, a gear train, and a chain and sprocket to a spool that pulls the load up an inclined plane. My calculated mechanical advantage is 7.38, inside the required range of 5 to 15. After a rough start, the finished machine worked.</p>
+
+      <h4>Design brief</h4>
+      <div class="brief">
+        <div class="figs" style="margin-top:0"><figure class="fig "><button class="zoom" type="button" data-cap="Design brief, written by Adrit" aria-label="Enlarge image: Design brief, written by Adrit"><img src="assets/img-20.jpg" alt="Design brief, written by Adrit" loading="lazy"></button><figcaption>Design brief, written by Adrit</figcaption></figure></div>
+        <dl>
+          <dt>Client</dt><dd>Rescue System Inc.</dd>
+          <dt>End user</dt><dd>Response team</dd>
+          <dt>Problem</dt><dd>Lift pieces of rubble, about 1 kg, 5 in high to see if anything is inside.</dd>
+          <dt>Design statement</dt><dd>A machine powered only by hand that can lift a 1 kg weight 5 in high.</dd>
+          <dt>Criteria and constraints</dt><dd>
+            <ul style="margin:6px 0 0;padding-left:18px">
+              <li>Mechanical advantage greater than 5 and less than 15</li>
+              <li>Lift 1 kg 5 in vertically</li>
+              <li>At least 5 simple machines: lever, wheel and axle, inclined plane, screw or worm, and a gear train or chain and sprocket</li>
+              <li>A single human input</li>
+              <li>VEX parts only, on one base plate</li>
+            </ul></dd>
+        </dl>
+      </div>
+
+      <h4>Team and roles</h4>
+      <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Member</th><th>Role</th><th>Contribution</th></tr></thead>
+        <tbody>
+          <tr><td>Me</td><td>Technical Engineer</td><td>Planned how the machine works and where every part goes, did most of the mechanical research and the brainstorm sketches, and made sure every criterion was met. Built the lever and worm screw. MA calculations with Caleb.</td></tr>
+          <tr><td>Caleb</td><td>Systems Engineer</td><td>Made the Gantt chart and built the inclined plane. MA calculations with me.</td></tr>
+          <tr><td>Himadeep</td><td>Communication Engineer</td><td>Handled stability on build days.</td></tr>
+          <tr><td>Adrit</td><td>&ndash;</td><td>Wrote the design brief.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="calc-note">Everyone worked on build days. Timeline from our Gantt chart: 9/2 to 9/22.</p>
+
+      <h4>Brainstorm</h4>
+      <div class="figs">
+        <figure class="fig "><button class="zoom" type="button" data-cap="Sketch 1: 3-gear lever" aria-label="Enlarge image: Sketch 1: 3-gear lever"><img src="assets/img-21.jpg" alt="Sketch 1: 3-gear lever" loading="lazy"></button><figcaption>Sketch 1: 3-gear lever</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Sketch 2: gear-driven screw lift. Rejected because it didn&#x27;t match the design statement." aria-label="Enlarge image: Sketch 2: gear-driven screw lift. Rejected because it didn&#x27;t match the design statement."><img src="assets/img-22.jpg" alt="Sketch 2: gear-driven screw lift. Rejected because it didn&#x27;t match the design statement." loading="lazy"></button><figcaption>Sketch 2: gear-driven screw lift. Rejected because it didn't match the design statement.</figcaption></figure>
+        <figure class="fig chosen"><button class="zoom" type="button" data-cap="Sketch 3: worm, sprocket, and sprocket lift. Chosen." aria-label="Enlarge image: Sketch 3: worm, sprocket, and sprocket lift. Chosen."><img src="assets/img-23.jpg" alt="Sketch 3: worm, sprocket, and sprocket lift. Chosen." loading="lazy"></button><figcaption>Sketch 3: worm, sprocket, and sprocket lift. Chosen.</figcaption></figure>
+      </div>
+
+      <h4>Decision matrix</h4>
+      <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Sketch</th><th class="r">Building ease<br>(1 hard, 5 easy)</th><th class="r">Functionality</th><th class="r">Stability</th><th class="r">Total</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="r">4</td><td class="r">4</td><td class="r">5</td><td class="r">13</td></tr>
+          <tr><td>2</td><td class="r">3</td><td class="r">2</td><td class="r">3</td><td class="r">8</td></tr>
+          <tr class="pick"><td>3 (chosen)</td><td class="r">5</td><td class="r">3</td><td class="r">5</td><td class="r">13</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>Sketches 1 and 3 tied at 13. As a group, we picked 3 because it uses all the simple machines most efficiently. Sketch 1 was close, but it was messier and might not have been as efficient to build.</p>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="Decision matrix slide (group consensus)" aria-label="Enlarge image: Decision matrix slide (group consensus)"><img src="assets/img-24.jpg" alt="Decision matrix slide (group consensus)" loading="lazy"></button><figcaption>Decision matrix slide (group consensus)</figcaption></figure></div>
+
+      <h4>Planning the build</h4>
+      <div class="figs">
+        <figure class="fig "><button class="zoom" type="button" data-cap="My isometric drawing with part labels" aria-label="Enlarge image: My isometric drawing with part labels"><img src="assets/img-25.jpg" alt="My isometric drawing with part labels" loading="lazy"></button><figcaption>My isometric drawing with part labels</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Planning sketch for the spool, sprockets, and inclined plane" aria-label="Enlarge image: Planning sketch for the spool, sprockets, and inclined plane"><img src="assets/img-26.jpg" alt="Planning sketch for the spool, sprockets, and inclined plane" loading="lazy"></button><figcaption>Planning sketch for the spool, sprockets, and inclined plane</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="The animated 3D model I made with Claude to check the design against the criteria" aria-label="Enlarge image: The animated 3D model I made with Claude to check the design against the criteria"><img src="assets/img-27.jpg" alt="The animated 3D model I made with Claude to check the design against the criteria" loading="lazy"></button><figcaption>The animated 3D model I made with Claude to check the design against the criteria</figcaption></figure>
+      </div>
+
+      <h4>Power path and MA calculations</h4>
+      <ol class="path" id="powerPath">
+        <li><div class="nm">Hand crank</div><div class="ty">Lever, on a rod through an 18T sprocket</div><code>Lever = 1</code></li>
+        <li><div class="nm">Worm screw</div><div class="ty">Screw, 7 TPI</div><code>C / pitch = 2.7475</code><div class="fl">Worm gears are high friction and self-locking, so expect lower efficiency.</div></li>
+        <li><div class="nm">Worm to 60T gear</div><div class="ty">Screw mechanism</div><code>60 / 7 = 8.57</code></li>
+        <li><div class="nm">Gear train</div><div class="ty">60T gear drives 36T gear</div><code>36 / 60 = 0.6</code><div class="fl">MA below 1. This stage trades force for speed.</div></li>
+        <li><div class="nm">Chain and sprocket</div><div class="ty">24T sprocket on the 36T gear's axle, chain to a 24T sprocket</div><code>24 / 24 = 1</code><div class="fl">Easiest to calculate, since both sprockets are 24T.</div></li>
+        <li><div class="nm">Spool</div><div class="ty">Wheel and axle</div><code>0.125 / 0.5 = 0.25</code><div class="fl">Hardest to calculate. The parts were tiny and hard to measure, and it was easy to mix up diameter and radius.</div></li>
+        <li><div class="nm">Inclined plane</div><div class="ty">11 in base, 6 in height, about 12.53 in slope</div><code>12.53 / 6 = 2.09</code></li>
+      </ol>
+      <div class="formula"><span>Total MA =</span> 2.7475 &times; 1 &times; 8.57 &times; 1 &times; 2.09 &times; 0.25 &times; 0.6 = <b style="color:#fff">7.38</b></div>
+      <p class="ok-line">Inside the required range of 5 to 15.</p>
+      <div class="figs"><figure class="fig "><button class="zoom" type="button" data-cap="My MA calculations from my notebook" aria-label="Enlarge image: My MA calculations from my notebook"><img src="assets/img-28.jpg" alt="My MA calculations from my notebook" loading="lazy"></button><figcaption>My MA calculations from my notebook</figcaption></figure></div>
+
+      <h4>Build</h4>
+      <p>On build days I built the lever and worm screw, Caleb built the inclined plane, and Himadeep handled stability.</p>
+      <div class="figs">
+        <figure class="fig "><button class="zoom" type="button" data-cap="Side view: worm, gear train, and chain feeding the spool" aria-label="Enlarge image: Side view: worm, gear train, and chain feeding the spool"><img src="assets/img-29.jpg" alt="Side view: worm, gear train, and chain feeding the spool" loading="lazy"></button><figcaption>Side view: worm, gear train, and chain feeding the spool</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Close-up of the chain and sprocket, gears, and ramp" aria-label="Enlarge image: Close-up of the chain and sprocket, gears, and ramp"><img src="assets/img-30.jpg" alt="Close-up of the chain and sprocket, gears, and ramp" loading="lazy"></button><figcaption>Close-up of the chain and sprocket, gears, and ramp</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Looking down the inclined plane, with the crank sprocket in front" aria-label="Enlarge image: Looking down the inclined plane, with the crank sprocket in front"><img src="assets/img-31.jpg" alt="Looking down the inclined plane, with the crank sprocket in front" loading="lazy"></button><figcaption>Looking down the inclined plane, with the crank sprocket in front</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Spool end: the chain turns the spool that winds the rope" aria-label="Enlarge image: Spool end: the chain turns the spool that winds the rope"><img src="assets/img-32.jpg" alt="Spool end: the chain turns the spool that winds the rope" loading="lazy"></button><figcaption>Spool end: the chain turns the spool that winds the rope</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="The finished build, Group 1B" aria-label="Enlarge image: The finished build, Group 1B"><img src="assets/img-33.jpg" alt="The finished build, Group 1B" loading="lazy"></button><figcaption>The finished build, Group 1B</figcaption></figure>
+        <figure class="fig "><button class="zoom" type="button" data-cap="Angle from the crank end" aria-label="Enlarge image: Angle from the crank end"><img src="assets/img-34.jpg" alt="Angle from the crank end" loading="lazy"></button><figcaption>Angle from the crank end</figcaption></figure>
+      </div>
+      <div class="vids" style="margin-top:12px">
+        <figure class="vfig"><video controls playsinline muted preload="none" poster="assets/img-35.jpg" src="assets/video-02.mp4"></video><figcaption>Walkaround of the finished machine (25 s)</figcaption></figure>
+      </div>
+
+      <h4>Testing</h4>
+      <p>Test run: cranking the load up the inclined plane by hand.</p>
+      <div class="vids">
+        <figure class="vfig"><video id="testVid" controls playsinline muted preload="none" poster="assets/img-36.jpg" src="assets/video-03.mp4"></video><figcaption>Test run of the compound machine (77 s)</figcaption></figure>
+      </div>
+      <p style="margin-top:20px">Effort force isn't in my records yet. Enter it below to work out AMA and efficiency.</p>
+      <div class="calc">
+        <div class="calc-in">
+          <fieldset class="fset" style="margin-bottom:0"><legend>Test run</legend><div class="fields">
+            <label>Load (N)<input type="number" step="any" min="0" data-k="loadN"></label>
+            <label>Effort force (N)<input type="number" step="any" min="0" data-k="effortN" placeholder="Measure"></label>
+          </div></fieldset>
+          <p class="calc-note">1 kg weighs about 9.81 N.</p>
+        </div>
+        <div class="calc-out" aria-live="polite">
+          <div class="out-row"><span class="k">Calculated MA<small>from my notebook</small></span><span class="v">7.38</span></div>
+          <div class="out-row"><span class="k">AMA<small>load / effort</small></span><span class="v" id="o-ama"></span></div>
+          <div class="out-row"><span class="k">Efficiency<small>AMA / 7.38</small></span><span class="v" id="o-eff"></span></div>
+          <p class="calc-note">To show the measured effort to every visitor, fill in POE_MEASUREMENTS at the bottom of this page's code.</p>
+        </div>
+      </div>
+
+      <h4>What happened</h4>
+      <p>After the first 2 build days, I realized my plan was a disaster. My sketches were 2D, so the design wouldn't meet the criteria. I researched how simple machines are actually used, sketched different views in my notebook, and had Claude build an animated 3D model of the machine. It was wrong at first, but after iterating against the criteria and constraints, we had a buildable plan that worked.</p>
+      <div class="notes">
+        <div class="note"><h5>Problems</h5><ul>
+          <li>2D sketches hid whether the design actually met the criteria.</li>
+          <li>We lost a lot of time screwing in rails and keeping gears in place.</li></ul></div>
+        <div class="note"><h5>What I learned</h5><ul>
+          <li>Trial and error taught me how compound machines work. Now I notice them in cranes and construction.</li>
+          <li>From my mentorship this summer: companies split features across teams, and the systems engineer oversees the merge.</li></ul></div>
+        <div class="note"><h5>Working as a team</h5><ul>
+          <li>We changed where parts went many times, and that iteration got us to a working machine.</li>
+          <li>I listened first, then gave my input, and we had no arguments about the build steps.</li>
+          <li>When ideas conflict, a decision matrix is the fairest way to settle it.</li></ul></div>
+        <div class="note"><h5>Next time</h5><ul>
+          <li>Plan better, and be conceptually right from the start.</li>
+          <li>Focus early on the parts that need the most stability.</li></ul></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ===================== PERSONAL PROJECTS ===================== -->
+<section class="block" id="projects">
+  <div class="sec-head">
+    <div>
+      <p class="sec-kicker">Outside the classroom</p>
+      <h2 class="sec-title">Personal <span class="m">Projects</span></h2>
+    </div>
+    <div class="sec-meta">
+      <p>Software I've built outside of class: an AI learning-lab generator for a hackathon, and an all-in-one platform for conventions and events.</p>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Repend <span>DSH Hacks V1</span></h3>
+  <p class="sub-intro">Repend turns any topic into a self-contained interactive learning lab, in 2D or 3D, built around a Predict, Play, Explain flow.</p>
+
+  <div class="rp-facts">
+    <div><div class="k">Event</div><div class="v">DSH Hacks V1, online on Devpost</div></div>
+    <div><div class="k">Theme</div><div class="v">AI for STEM education</div></div>
+    <div><div class="k">Submissions</div><div class="v">May 20 to June 15, 2026</div></div>
+    <div><div class="k">Result</div><div class="v">Participation Prize, given to all 283 qualifying teams</div></div>
+  </div>
+
+  <article class="proj" style="border-top:0;padding-top:0">
+    <div class="proj-side">
+      <div class="proj-no">HACKATHON</div>
+      <h3>My role</h3>
+      <dl class="spec">
+        <div><dt>My role</dt><dd>Main backend builder</dd></div>
+        <div><dt>Team</dt><dd>sid k, Tejas Gundapaneni, me</dd></div>
+        <div><dt>Commits</dt><dd><span data-count="137" data-prefix="~">0</span></dd></div>
+        <div><dt>PRs merged</dt><dd><span data-count="14">0</span></dd></div>
+        <div><dt>Deploy</dt><dd>Railway</dd></div>
+      </dl>
+      <p class="calc-note">Commit count covers the submission window, mostly written through Claude Code in my repo. sid k created the Devpost page.</p>
+    </div>
+    <div class="proj-main">
+      <p class="lead">I was the main builder for the backend. I created and owned the repo, merged every pull request, and built the AI pipeline that generates each lab.</p>
+
+      <h4>Lab-generation pipeline</h4>
+      <p>It started as a single model call and grew into a multi-stage pipeline that streams progress to the browser over server-sent events.</p>
+      <div class="pipe">
+        <div class="st"><b>Topic expansion</b><span>Broadens the request</span></div>
+        <div class="st"><b>Reasoning</b><span>Plans the lab</span></div>
+        <div class="st"><b>JSON spec</b><span>Structured design</span></div>
+        <div class="st"><b>HTML codegen</b><span>Builds the lab</span></div>
+        <div class="st v"><b>Validation</b><span>Catches broken labs</span></div>
+      </div>
+      <div class="loop"><svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M20 3v4a4 4 0 0 1-4 4H3M6 7l-4 4 4 4"/></svg>Self-repair loop sends broken labs back for a fix</div>
+
+      <div class="notes" style="margin-top:36px">
+        <div class="note"><h5>Pipeline and labs</h5><ul>
+          <li>Validation and self-repair loop, plus a canvas-sizing runtime. Generated labs run inside sandboxed iframes.</li>
+          <li>Built Predict, Play, Explain on June 3, then removed the Predict modal on the last day so labs open fully interactive.</li>
+          <li>Wrote some fixes by hand, including the planning JSON prompt and server crash fixes.</li></ul></div>
+        <div class="note"><h5>Platform</h5><ul>
+          <li>Supabase lab cache and auth (Google and email).</li>
+          <li>Saved-labs library, file upload, and shareable lab links.</li>
+          <li>Course structure, public course explore, and lab rating.</li></ul></div>
+        <div class="note"><h5>Models and deploy</h5><ul>
+          <li>Tried many providers under free-tier limits: GPT-4o, Gemini 2.x, Claude on Vertex, Kimi and Qwen, and Nemotron on NVIDIA Build.</li>
+          <li>Deployed on Railway.</li></ul></div>
+        <div class="note"><h5>Team integration</h5><p>Integrated a teammate's UI bundle: the 3D landing page, achievements, design system, and XP and streak gamification. That design work is theirs.</p></div>
+      </div>
+
+      <div class="later">
+        <h5>Later development, after the hackathon</h5>
+        <p style="margin:0">A GPT-4o vision critic, Kimi K2.6, Tavily grounding, and the Repend.app launch. None of this was part of the hackathon submission.</p>
+      </div>
+
+      <h4>From the submission</h4>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="A generated compound interest lab, Match the Market, opening on the Predict step. From the Devpost gallery." aria-label="Enlarge image: Generated compound interest lab on the Predict step"><img src="assets/img-37.jpg" alt="Generated compound interest lab on the Predict step" loading="lazy"></button><figcaption>A generated compound interest lab, Match the Market, opening on the Predict step. From the Devpost gallery.</figcaption></figure><figure class="fig "><button class="zoom" type="button" data-cap="The pipeline streaming its steps while it builds a genetics lab on pedigrees. From the Devpost demo video." aria-label="Enlarge image: Repend pipeline streaming progress while building a genetics lab"><img src="assets/img-38.jpg" alt="Repend pipeline streaming progress while building a genetics lab" loading="lazy"></button><figcaption>The pipeline streaming its steps while it builds a genetics lab on pedigrees. From the Devpost demo video.</figcaption></figure></div>
+      <div class="links">
+        <a class="btn" href="https://github.com/dhruvatejmandadi35-lab/Repend-1" target="_blank" rel="noopener">GitHub repo <span class="arr">-&gt;</span></a>
+        <a class="btn" href="https://devpost.com/software/repend" target="_blank" rel="noopener">Devpost submission <span class="arr">-&gt;</span></a>
+        <a class="btn" href="https://www.youtube.com/watch?v=EqjdWXVeIDk" target="_blank" rel="noopener">Demo video <span class="arr">-&gt;</span></a>
+      </div>
+    </div>
+  </article>
+
+  <div class="sub-block" id="cofinity">
+  <h3 class="sub-title">Cofinity <span>Built with Lovable</span></h3>
+  <p class="sub-intro">An all-in-one platform for conventions and events. Teams, calendars, event posting, and community engagement in one place.</p>
+
+  <div class="rp-facts">
+    <div><div class="k">Type</div><div class="v">Platform for conventions and events</div></div>
+    <div><div class="k">Built with</div><div class="v">Lovable</div></div>
+    <div><div class="k">Structure</div><div class="v">Organizations, departments, teams</div></div>
+    <div><div class="k">Live</div><div class="v"><a href="https://cofinity.lovable.app" target="_blank" rel="noopener" style="color:#fff">cofinity.lovable.app</a></div></div>
+  </div>
+
+  <article class="proj" style="border-top:0;padding-top:0">
+    <div class="proj-side">
+      <div class="proj-no">PERSONAL PROJECT</div>
+      <h3>At a glance</h3>
+      <dl class="spec">
+        <div><dt>Built by</dt><dd>Me, with Lovable</dd></div>
+        <div><dt>Roles</dt><dd>Owner, Admin, Manager, Member</dd></div>
+        <div><dt>Levels</dt><dd>7 tiers</dd></div>
+        <div><dt>Core ideas</dt><dd>Manage, Engage, Analyze</dd></div>
+      </dl>
+    </div>
+    <div class="proj-main">
+      <h4>The problem</h4>
+      <ul>
+        <li>Event management is split across multiple platforms.</li>
+        <li>RSVPs, check-ins, and communication aren't centralized.</li>
+        <li>Communities miss chances to interact and grow.</li>
+      </ul>
+
+      <h4>Set up your teams</h4>
+      <div class="pipe">
+        <div class="st"><b>Organization</b><span>A school or community</span></div>
+        <div class="st"><b>Department</b><span>A group inside it</span></div>
+        <div class="st v"><b>Team</b><span>With a description, department, and privacy setting</span></div>
+      </div>
+      <div class="figs wide" style="margin-top:12px"><figure class="fig "><button class="zoom" type="button" data-cap="Creating an organization, a department, and a team" aria-label="Enlarge image: Creating an organization, a department, and a team"><img src="assets/img-39.jpg" alt="Creating an organization, a department, and a team" loading="lazy"></button><figcaption>Creating an organization, a department, and a team</figcaption></figure></div>
+
+      <h4>Events and RSVPs</h4>
+      <p>A calendar with capacity limits, waitlists, and calendar sync. Every event connects to a team, so there's no need for SignUpGenius; it's all in one place.</p>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="The Cofinity calendar and the Create Event form" aria-label="Enlarge image: The Cofinity calendar and the Create Event form"><img src="assets/img-40.jpg" alt="The Cofinity calendar and the Create Event form" loading="lazy"></button><figcaption>The Cofinity calendar and the Create Event form</figcaption></figure></div>
+
+      <h4>Teams and workspaces</h4>
+      <p>Structured teams with roles, real-time chat, shared docs, and task boards. Every team gets its own workspace with channels, polls, and announcements.</p>
+      <div class="figs wide"><figure class="fig "><button class="zoom" type="button" data-cap="My Teams and a team workspace with channels for chat, polls, docs, tasks, and a leaderboard" aria-label="Enlarge image: My Teams and a team workspace with channels for chat, polls, docs, tasks, and a leaderboard"><img src="assets/img-41.jpg" alt="My Teams and a team workspace with channels for chat, polls, docs, tasks, and a leaderboard" loading="lazy"></button><figcaption>My Teams and a team workspace with channels for chat, polls, docs, tasks, and a leaderboard</figcaption></figure></div>
+
+      <div class="notes" style="margin-top:28px">
+        <div class="note"><h5>Points and levels</h5><p>A 7-tier system, from Newcomer to Icon, rewards engagement with profile badges, custom borders, early feature access, and exclusive roles. No real money, just community recognition.</p></div>
+        <div class="note"><h5>Control and insights</h5><ul>
+          <li>Attendance and engagement analytics, with a health score.</li>
+          <li>Roles and permissions: Owner, Admin, Manager, Member.</li>
+          <li>Granular access control for secure team management.</li></ul></div>
+        <div class="note"><h5>What it's for</h5><ul>
+          <li><b>Explore:</b> find events and join teams.</li>
+          <li><b>Collaborate:</b> teams, workspaces, and progress tracking.</li>
+          <li><b>Connect:</b> community building.</li></ul></div>
+      </div>
+      <div class="figs wide" style="margin-top:20px"><figure class="fig "><button class="zoom" type="button" data-cap="The 7-tier Points and Levels system" aria-label="Enlarge image: The 7-tier Points and Levels system"><img src="assets/img-42.jpg" alt="The 7-tier Points and Levels system" loading="lazy"></button><figcaption>The 7-tier Points and Levels system</figcaption></figure></div>
+
+      <div class="links">
+        <a class="btn" href="https://cofinity.lovable.app" target="_blank" rel="noopener">Open Cofinity <span class="arr">-&gt;</span></a>
+      </div>
+    </div>
+  </article>
+  </div>
+</section>
+</main>
+
+<footer id="contact">
+  <div class="foot-grid">
+    <h2 class="foot-title">Dhruvatej Mandadi<span>Frisco High School</span></h2>
+    <div>
+      <p class="sec-kicker" style="margin-bottom:12px">Contact</p>
+      <a class="btn" href="mailto:dhruvatejmandadi@gmail.com">dhruvatejmandadi@gmail.com <span class="arr">-&gt;</span></a>
+    </div>
+  </div>
+  <div class="copy"><span>Engineering portfolio, 2026</span><a href="#top" style="text-decoration:none">Back to top</a></div>
+</footer>
+
+<div class="modal" id="demo" role="dialog" aria-modal="true" aria-label="Compound machine test run">
+  <div class="modal-box" style="width:min(520px,100%)">
+    <button class="modal-close" id="closeDemo" aria-label="Close video">&times;</button>
+    <video id="demoVid" controls playsinline muted preload="none" poster="assets/img-36.jpg"></video>
+    <p class="lb-cap">Test run: cranking the load up the inclined plane.</p>
+  </div>
+</div>
+<div class="modal" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+  <div class="modal-box" style="width:min(1100px,100%)">
+    <button class="modal-close" id="closeLb" aria-label="Close image">&times;</button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <p class="lb-cap" id="lbCap"></p>
+  </div>
+</div>
+<script>
+/* ============================================================
+   POE_MEASUREMENTS: fill in effortN once you measure it
+   (the force on the crank, in newtons). null = not measured yet.
+   ============================================================ */
+const POE_MEASUREMENTS = {
+  loadN: 9.81,   // 1 kg load
+  effortN: null  // measured effort force
+};
+const POE_IMA = 7.38; // from my notebook calculations
+
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Nav background on scroll */
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* Mobile drawer */
+  const drawer = document.getElementById('drawer'), burger = document.getElementById('burger');
+  const setDrawer = open => { drawer.classList.toggle('open', open); burger.setAttribute('aria-expanded', open); document.body.style.overflow = open ? 'hidden' : ''; if(open) drawer.querySelector('a').focus(); };
+  burger.addEventListener('click', () => setDrawer(true));
+  document.getElementById('drawerClose').addEventListener('click', () => setDrawer(false));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+
+  /* Modals: demo + image lightbox */
+  let lastFocus = null;
+  const openModal = (m, focusEl) => { lastFocus = document.activeElement; m.classList.add('open'); document.body.style.overflow = 'hidden'; focusEl.focus(); };
+  const closeModal = m => { m.querySelectorAll('video').forEach(v => v.pause()); m.classList.remove('open'); document.body.style.overflow = ''; if(lastFocus) lastFocus.focus(); };
+  const demo = document.getElementById('demo'), lb = document.getElementById('lightbox');
+  document.getElementById('openDemo').addEventListener('click', () => { openModal(demo, document.getElementById('closeDemo')); const v = document.getElementById('demoVid'); if(!v.src) v.src = document.getElementById('testVid').src; v.play().catch(() => {}); });
+  document.getElementById('closeDemo').addEventListener('click', () => closeModal(demo));
+  document.getElementById('closeLb').addEventListener('click', () => closeModal(lb));
+  [demo, lb].forEach(m => m.addEventListener('click', e => { if(e.target === m) closeModal(m); }));
+  document.querySelectorAll('.zoom').forEach(b => b.addEventListener('click', () => {
+    const img = b.querySelector('img');
+    document.getElementById('lbImg').src = img.src;
+    document.getElementById('lbImg').alt = img.alt;
+    document.getElementById('lbCap').textContent = b.dataset.cap;
+    openModal(lb, document.getElementById('closeLb'));
+  }));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape'){ [demo, lb].forEach(m => { if(m.classList.contains('open')) closeModal(m); }); if(drawer.classList.contains('open')) setDrawer(false); } });
+
+  /* Count-up numbers */
+  const countUp = el => {
+    const end = +el.dataset.count, pre = el.dataset.prefix || '', dec = +(el.dataset.dec || 0);
+    const show = v => el.textContent = pre + v.toFixed(dec);
+    if(reduce){ show(end); return; }
+    const dur = 1400, t0 = performance.now();
+    const step = now => { const p = Math.min((now - t0)/dur, 1), e = 1 - Math.pow(1 - p, 3);
+      show(dec ? end * e : Math.round(end * e)); if(p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  };
+  const io = new IntersectionObserver(entries => entries.forEach(en => { if(en.isIntersecting){ countUp(en.target); io.unobserve(en.target); } }), {threshold:.5});
+  document.querySelectorAll('[data-count]').forEach(el => io.observe(el));
+
+  /* HUD bars */
+  setTimeout(() => document.querySelectorAll('.bar i').forEach(b => b.style.width = b.dataset.w + '%'), reduce ? 0 : 700);
+
+  /* SVG helper */
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (tag, attrs, parent, text) => { const el = document.createElementNS(NS, tag); for(const k in attrs) el.setAttribute(k, attrs[k]); if(text != null) el.textContent = text; parent.appendChild(el); return el; };
+  const tip = (el, t) => { const ti = document.createElementNS(NS, 'title'); ti.textContent = t; el.appendChild(ti); };
+  const font = {'font-family':'Space Grotesk, sans-serif'};
+
+  /* Fling C2 bar chart */
+  const trials = [39,67,48,52,56,34,58,36,52,69,52,65,50,69,47];
+  const chart = document.getElementById('flingChart');
+  const X0 = 40, Y0 = 215, Wc = 590, Hc = 195, yMax = 80;
+  const y = v => Y0 - v / yMax * Hc;
+  [0,20,40,60,80].forEach(v => {
+    mk('line', {x1:X0, x2:X0+Wc, y1:y(v), y2:y(v), stroke:'rgba(255,255,255,.07)'}, chart);
+    mk('text', {x:X0-10, y:y(v)+4, 'text-anchor':'end', fill:'rgba(255,255,255,.4)', 'font-size':11, ...font}, chart, v);
+  });
+  const bw = Wc / trials.length;
+  trials.forEach((v, i) => {
+    const x = X0 + i*bw + bw*.22;
+    tip(mk('rect', {x, y:y(v), width:bw*.56, height:Y0 - y(v), fill: v === 52 ? '#ffffff' : 'rgba(255,255,255,.38)'}, chart), 'Trial ' + (i+1) + ': ' + v + ' in');
+    mk('text', {x:x + bw*.28, y:Y0+18, 'text-anchor':'middle', fill:'rgba(255,255,255,.4)', 'font-size':10.5, ...font}, chart, i+1);
+  });
+  mk('line', {x1:X0, x2:X0+Wc, y1:y(52.93), y2:y(52.93), stroke:'#10b981', 'stroke-width':1.5, 'stroke-dasharray':'5 4'}, chart);
+  mk('text', {x:X0, y:248, fill:'rgba(255,255,255,.4)', 'font-size':10.5, ...font}, chart, 'Trial number. White bars hit the mode, 52 in.');
+
+  /* Box plot */
+  const box = document.getElementById('flingBox');
+  const bx = v => 40 + (v - 15) / (95 - 15) * 590, my = 38;
+  for(let v = 20; v <= 90; v += 10){
+    mk('line', {x1:bx(v), x2:bx(v), y1:70, y2:75, stroke:'rgba(255,255,255,.25)'}, box);
+    mk('text', {x:bx(v), y:89, 'text-anchor':'middle', fill:'rgba(255,255,255,.4)', 'font-size':10.5, ...font}, box, v);
+  }
+  mk('line', {x1:40, x2:630, y1:70, y2:70, stroke:'rgba(255,255,255,.15)'}, box);
+  [20,92].forEach(v => { mk('line', {x1:bx(v), x2:bx(v), y1:14, y2:62, stroke:'#e8b44c', 'stroke-dasharray':'3 3'}, box); mk('text', {x:bx(v), y:10, 'text-anchor':'middle', fill:'#e8b44c', 'font-size':10, ...font}, box, 'fence ' + v); });
+  mk('line', {x1:bx(34), x2:bx(47), y1:my, y2:my, stroke:'#fff'}, box);
+  mk('line', {x1:bx(65), x2:bx(69), y1:my, y2:my, stroke:'#fff'}, box);
+  [34,69].forEach(v => mk('line', {x1:bx(v), x2:bx(v), y1:my-9, y2:my+9, stroke:'#fff'}, box));
+  mk('rect', {x:bx(47), y:my-15, width:bx(65)-bx(47), height:30, fill:'rgba(16,185,129,.14)', stroke:'#10b981'}, box);
+  mk('line', {x1:bx(52), x2:bx(52), y1:my-15, y2:my+15, stroke:'#fff', 'stroke-width':2}, box);
+  [[34,'min 34'],[47,'Q1 47'],[52,'med 52'],[65,'Q3 65'],[69,'max 69']].forEach(([v,l],i) =>
+    mk('text', {x:bx(v), y: i % 2 ? my+28 : my-20, 'text-anchor':'middle', fill:'rgba(255,255,255,.65)', 'font-size':10, ...font}, box, l));
+
+  /* C3 target map: 10 shots from the trial table (x, y in inches) */
+  const shots = [[0,0],[1,-5],[-6,0],[-7,6],[5,3],[8,1],[-5,2],[2,2],[4,4],[0,-5]];
+  const tg = document.getElementById('target');
+  [5,10,15].forEach(r => mk('circle', {cx:0, cy:0, r, fill:'none', stroke:'rgba(255,255,255,.14)', 'stroke-width':.12}, tg));
+  mk('line', {x1:-16, x2:16, y1:0, y2:0, stroke:'rgba(255,255,255,.18)', 'stroke-width':.1}, tg);
+  mk('line', {x1:0, x2:0, y1:-16, y2:16, stroke:'rgba(255,255,255,.18)', 'stroke-width':.1}, tg);
+  mk('circle', {cx:0.2, cy:-0.8, r:4.69, fill:'rgba(16,185,129,.08)', stroke:'#10b981', 'stroke-width':.15, 'stroke-dasharray':'.6 .4'}, tg);
+  shots.forEach(([sx, sy], i) => tip(mk('circle', {cx:sx, cy:-sy, r:.55, fill:'rgba(255,255,255,.85)'}, tg), 'Trial ' + (i+1) + ': (' + sx + ', ' + sy + ') in'));
+  mk('circle', {cx:0.2, cy:-0.8, r:.42, fill:'#10b981'}, tg);
+  mk('text', {x:-15.5, y:15.6, fill:'#10b981', 'font-size':1.25, ...font}, tg, 'Center (0.2, 0.8)');
+  mk('text', {x:-15.5, y:-14.4, fill:'rgba(255,255,255,.6)', 'font-size':1.2, ...font}, tg, '1σ = 4.69 in');
+
+  /* Power path reveal */
+  const steps = document.querySelectorAll('#powerPath li');
+  if(reduce){ steps.forEach(s => s.classList.add('lit')); }
+  else {
+    const po = new IntersectionObserver(en => { if(en[0].isIntersecting){ steps.forEach((s,i) => setTimeout(() => s.classList.add('lit'), i*230)); po.disconnect(); } }, {threshold:.3});
+    po.observe(document.getElementById('powerPath'));
+  }
+
+  /* AMA and efficiency */
+  const inputs = document.querySelectorAll('.calc input');
+  inputs.forEach(inp => { const v = POE_MEASUREMENTS[inp.dataset.k]; if(typeof v === 'number') inp.value = v; });
+  const out = (id, val) => { const el = document.getElementById(id); if(val == null){ el.textContent = 'Needs effort force'; el.classList.add('empty'); } else { el.textContent = val; el.classList.remove('empty'); } };
+  const calc = () => {
+    const v = {}; inputs.forEach(i => { const n = parseFloat(i.value); v[i.dataset.k] = Number.isFinite(n) && n > 0 ? n : null; });
+    const ama = v.loadN && v.effortN ? v.loadN / v.effortN : null;
+    out('o-ama', ama != null ? ama.toFixed(2) : null);
+    out('o-eff', ama != null ? (ama / POE_IMA * 100).toFixed(1) + '%' : null);
+  };
+  inputs.forEach(i => i.addEventListener('input', calc));
+  calc();
+})();
+</script>
+<script>
+(function(){
+  const show=document.getElementById('show'); if(!show) return;
+  const track=document.getElementById('track'), slides=[...track.children], dotsEl=document.getElementById('dots'), count=document.getElementById('showCount');
+  slides.forEach(sl=>{const im=sl.querySelector('img'); const src=document.querySelector('img[alt^="'+im.dataset.from+'"]'); if(src){im.src=src.src;} else {sl.remove();}});
+  const live=[...track.children]; const N=live.length;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, DUR=4500;
+  live.forEach((_,k)=>{const b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Show project '+(k+1)); b.innerHTML='<i></i>'; b.onclick=()=>go(k,true); dotsEl.appendChild(b);});
+  const dots=[...dotsEl.children]; let cur=0, t0=0, paused=false, raf;
+  function go(k,user){cur=(k+N)%N; track.style.transform='translateX('+(-100*cur)+'%)';
+    live.forEach((sl,j)=>{sl.classList.toggle('on',j===cur); sl.setAttribute('aria-hidden',j!==cur); sl.querySelectorAll('a').forEach(a=>a.tabIndex=j===cur?0:-1);});
+    dots.forEach((d,j)=>{d.classList.toggle('done',j<cur); d.firstChild.style.width=j<cur?'100%':'0';});
+    count.textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0'); t0=performance.now();}
+  function tick(now){ if(!paused&&!reduce){const p=Math.min((now-t0)/DUR,1); dots[cur].firstChild.style.width=(p*100)+'%'; if(p>=1) go(cur+1);} else {t0=now-(parseFloat(dots[cur].firstChild.style.width)||0)/100*DUR;} raf=requestAnimationFrame(tick);}
+  document.getElementById('prev').onclick=()=>go(cur-1,true);
+  document.getElementById('next').onclick=()=>go(cur+1,true);
+  show.addEventListener('mouseenter',()=>paused=true); show.addEventListener('mouseleave',()=>paused=false);
+  show.addEventListener('focusin',()=>paused=true); show.addEventListener('focusout',()=>paused=false);
+  let x0=null; track.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{if(x0===null)return; const dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>40) go(cur+(dx<0?1:-1),true); x0=null;});
+  go(0); requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
+
+</body></html>
